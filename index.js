@@ -1,9 +1,12 @@
+/* Creates random choice for the computer */
 function getComputerChoice() {
     let choices = ['Rock', 'Paper', 'Scissors'];
     let randomIndex = Math.floor((Math.random()*3));
     let computerChoice = choices[randomIndex];
     return computerChoice;
 }
+
+/* compares the user's choice with the computers' to determine who wins */
 function playRound(playerSelection, computerSelection) {
     playerSelection = playerSelection.toLowerCase();
     computerSelection = computerSelection.toLowerCase();
@@ -15,26 +18,54 @@ message = `This is a tie, you both choose ${playerSelection}`
     }  else if ((playerSelection == 'paper' && computerSelection == 'scissors') ||  (playerSelection == 'rock' && computerSelection == 'paper') || (playerSelection == 'scissors' && computerSelection == 'rock')) {
         message = `You Lose! ${computerSelection} beats ${playerSelection}`
     }
+   
 return message;
 };
-console.log();
-function game(){
-    
-    let scores = {computer: 0, you: 0, ties:0};
-    for(let i = 0; i < 5; i++){
-        const playerSelection = prompt('Write you choice(rock, paper, scissors) correctly');
-        const computerSelection = getComputerChoice();
+
+/* repeat the game 5 times and keeps score */
+let scores = {computer:0, you:0, ties:0};
+function game(playerSelection, computerSelection){
+
         let point = playRound(playerSelection, computerSelection);
         if(point.includes('Win')){
-            scores['computer']++
-        } else if (point.includes('Lose')) {
             scores['you']++
+        } else if (point.includes('Lose')) {
+            scores['computer']++
         }else if (point.includes('tie')) {
             scores['ties']++
         }
 
-    }
-console.log(scores);
-
 }
-game();
+/* Update the current results on the screen */
+function updateResults(){
+    $('#computerScore').text(scores['computer']);
+    $('#userScore').text(scores['you']);
+    $('#tie').text(scores['ties']);
+}
+/* Announce the winner */ 
+function announceWinner(){
+    let winner = ``
+    if(scores['computer']==5){
+        winner += `Good Luck next time, the computer has won :(`;
+        $('button').eq(i).addClass('disabled');
+    } else if(scores['you']==5) {
+        winner += `Congratulations, You have won :)`;
+        $('button').addClass('disabled');
+
+    }
+    return winner;
+}
+/* --------------------- */
+/* Events  */
+$('button').click(function(event){
+    if(!((scores['computer']>=5) || scores['you'] >= 5))
+{const playerSelection = $(event.target).attr('data-value');
+const computerSelection = getComputerChoice();
+game(playerSelection, computerSelection);
+$('#computerChoice').text(computerSelection);
+updateResults()
+}
+if(announceWinner()) {
+$('#finalResult').text(' '+announceWinner())
+}
+})
